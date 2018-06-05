@@ -1,7 +1,6 @@
-require './lib/recipe'
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'pry'
+require './lib/recipe'
 
 class RecipeTest < Minitest::Test
   def test_it_has_a_name
@@ -39,5 +38,4 @@ class RecipeTest < Minitest::Test
     r.add_ingredient("Flour", 500)
     assert_equal 500, r.amount_required("Flour")
   end
-
 end

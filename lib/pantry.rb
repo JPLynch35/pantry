@@ -2,11 +2,13 @@ require './lib/recipe'
 
 class Pantry
   attr_reader :stock,
-              :shopping_list
+              :shopping_list,
+              :cookbook
 
   def initialize
     @stock = Hash.new(0)
     @shopping_list = Hash.new(0)
+    @cookbook = Array.new
   end
 
   def stock_check(ingredient)
@@ -31,5 +33,13 @@ class Pantry
       print_out += "* #{ingredient}: #{@shopping_list[ingredient]}\n"
       print_out
     end.chomp
+  end
+
+  def add_to_cookbook(recipe)
+    (@cookbook << recipe) if recipe.instance_of?(Recipe)
+  end
+
+  def what_can_i_make
+    
   end
 end
