@@ -18,6 +18,19 @@ class Pantry
   end
 
   def add_to_shopping_list(recipe)
-    @shopping_list = recipe.ingredients.merge(@shopping_list)
+    ingredients_added = recipe.ingredients
+    ingredients_added.keys.inject(@shopping_list) do |shopping_list, ingredient|
+      shopping_list[ingredient] = shopping_list[ingredient] + ingredients_added[ingredient]
+      shopping_list
+    end
+  end
+
+  def print_shopping_list
+    ingredients = @shopping_list.keys
+    print_out = ingredients.inject('') do |print_out, ingredient|
+      print_out += "* #{ingredient}: #{@shopping_list[ingredient]}\n"
+      print_out
+    end
+    require 'pry'; binding.pry
   end
 end
