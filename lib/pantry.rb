@@ -13,8 +13,8 @@ class Pantry
     @stock[ingredient]
   end
 
-  def restock(ingredient, quantity)
-    @stock[ingredient] = @stock[ingredient] + quantity
+  def restock(ingredient, amount)
+    @stock[ingredient] = @stock[ingredient] + amount
   end
 
   def add_to_shopping_list(recipe)
@@ -60,18 +60,18 @@ class Pantry
   def check_recipe_against_stock_for_quantity(recipe)
     rei = recipe.ingredients
     si = @stock
-    quantities = rei.keys.inject([]) do |collector, ingredient|
-      collector << si[ingredient] / rei[ingredient]
+    quantities_per_ingredient = rei.keys.inject([]) do |collector, ingredient|
+      collector << (si[ingredient] / rei[ingredient])
       collector
     end
-    quantities.min
+    quantities_per_ingredient.min
   end
 
   def how_many_can_i_make
     can_cook = make_list_of_valid_recipes
     can_cook.inject(Hash.new(0)) do |collector, recipe|
-      quantity = check_recipe_against_stock_for_quantity(recipe)
-      collector[recipe.name] = quantity
+      quantity_can_cook = check_recipe_against_stock_for_quantity(recipe)
+      collector[recipe.name] = quantity_can_cook
       collector
     end
   end
