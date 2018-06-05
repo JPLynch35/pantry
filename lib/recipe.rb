@@ -1,9 +1,10 @@
 class Recipe
-  attr_reader :name, :ingredients
-  
+  attr_reader :name,
+              :ingredients
+
   def initialize(name)
     @name = name
-    @ingredients = {}
+    @ingredients = Hash.new(0)
   end
 
   def ingredient_types
