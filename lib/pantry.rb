@@ -39,7 +39,21 @@ class Pantry
     (@cookbook << recipe) if recipe.instance_of?(Recipe)
   end
 
+  def check_recipe_against_stock(recipe)
+    rei = recipe.ingredients
+    si = @stock
+    valid_ingredients = rei.keys.find_all do |ingredient|
+      si[ingredient] >= rei[ingredient]
+    end
+    valid_ingredients.length == rei.keys.length
+  end
+
   def what_can_i_make
-    
+    @cookbook.inject(Array.new) do |collector, recipe|
+      if check_recipe_against_stock(recipe) == true
+        collector << recipe.name
+      end
+      collector
+    end
   end
 end
