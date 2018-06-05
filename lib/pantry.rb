@@ -1,5 +1,3 @@
-require './lib/recipe'
-
 class Pantry
   attr_reader :stock,
               :shopping_list,
@@ -8,7 +6,7 @@ class Pantry
   def initialize
     @stock = Hash.new(0)
     @shopping_list = Hash.new(0)
-    @cookbook = Array.new
+    @cookbook = []
   end
 
   def stock_check(ingredient)
@@ -29,7 +27,7 @@ class Pantry
 
   def print_shopping_list
     ingredients = @shopping_list.keys
-    print_out = ingredients.inject('') do |print_out, ingredient|
+    ingredients.inject('') do |print_out, ingredient|
       print_out += "* #{ingredient}: #{@shopping_list[ingredient]}\n"
       print_out
     end.chomp
@@ -49,24 +47,20 @@ class Pantry
   end
 
   def make_list_of_valid_recipes
-    @cookbook.inject(Array.new) do |collector, recipe|
-      if check_recipe_against_stock(recipe)
-        collector << recipe
-      end
+    @cookbook.inject([]) do |collector, recipe|
+      (collector << recipe) if check_recipe_against_stock(recipe)
       collector
     end
   end
 
   def what_can_i_make
-    make_list_of_valid_recipes.map do |recipe|
-      recipe.name
-    end
+    make_list_of_valid_recipes.map { |recipe| recipe.name }
   end
 
   def check_recipe_against_stock_for_quantity(recipe)
     rei = recipe.ingredients
     si = @stock
-    quantities = rei.keys.inject(Array.new) do |collector, ingredient|
+    quantities = rei.keys.inject([]) do |collector, ingredient|
       collector << si[ingredient] / rei[ingredient]
       collector
     end

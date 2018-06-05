@@ -42,11 +42,11 @@ class PantryTest < Minitest::Test
 
   def test_can_add_a_recipe_to_shopping_list
     pantry = Pantry.new
-    r = Recipe.new("Cheese Pizza")
+    r = Recipe.new('Cheese Pizza')
     expected = {}
     assert_equal expected, pantry.shopping_list
-    r.add_ingredient("Flour", 20)
-    r.add_ingredient("Cheese", 20)
+    r.add_ingredient('Flour', 20)
+    r.add_ingredient('Cheese', 20)
     pantry.add_to_shopping_list(r)
     expected =  {
                 'Cheese' => 20,
@@ -57,34 +57,34 @@ class PantryTest < Minitest::Test
 
   def test_can_add_multiple_recipes_to_shopping_list
     pantry = Pantry.new
-    r1 = Recipe.new("Cheese Pizza")
-    r1.add_ingredient("Flour", 20)
-    r1.add_ingredient("Cheese", 20)
+    r1 = Recipe.new('Cheese Pizza')
+    r1.add_ingredient('Flour', 20)
+    r1.add_ingredient('Cheese', 20)
     pantry.add_to_shopping_list(r1)
-    r2 = Recipe.new("Spaghetti")
-    r2.add_ingredient("Spaghetti Noodles", 10)
-    r2.add_ingredient("Marinara Sauce", 10)
-    r2.add_ingredient("Cheese", 5)
+    r2 = Recipe.new('Spaghetti')
+    r2.add_ingredient('Spaghetti Noodles', 10)
+    r2.add_ingredient('Marinara Sauce', 10)
+    r2.add_ingredient('Cheese', 5)
     pantry.add_to_shopping_list(r2)
     expected = {
-                "Cheese" => 25,
-                "Flour" => 20,
-                "Spaghetti Noodles" => 10,
-                "Marinara Sauce" => 10
+                'Cheese' => 25,
+                'Flour' => 20,
+                'Spaghetti Noodles' => 10,
+                'Marinara Sauce' => 10
                 }
     assert_equal expected, pantry.shopping_list
   end
 
   def test_can_print_the_shopping_list
     pantry = Pantry.new
-    r1 = Recipe.new("Cheese Pizza")
-    r1.add_ingredient("Cheese", 20)
-    r1.add_ingredient("Flour", 20)
+    r1 = Recipe.new('Cheese Pizza')
+    r1.add_ingredient('Cheese', 20)
+    r1.add_ingredient('Flour', 20)
     pantry.add_to_shopping_list(r1)
-    r2 = Recipe.new("Spaghetti")
-    r2.add_ingredient("Spaghetti Noodles", 10)
-    r2.add_ingredient("Marinara Sauce", 10)
-    r2.add_ingredient("Cheese", 5)
+    r2 = Recipe.new('Spaghetti')
+    r2.add_ingredient('Spaghetti Noodles', 10)
+    r2.add_ingredient('Marinara Sauce', 10)
+    r2.add_ingredient('Cheese', 5)
     pantry.add_to_shopping_list(r2)
     expected = "* Cheese: 25\n* Flour: 20\n* Spaghetti Noodles: 10\n* Marinara Sauce: 10"
     assert_equal expected, pantry.print_shopping_list
@@ -174,7 +174,30 @@ class PantryTest < Minitest::Test
     assert_equal expected, pantry.what_can_i_make
   end
 
-
+  def test_can_find_quantity_can_make_per_recipe
+    pantry = Pantry.new
+    r1 = Recipe.new('Cheese Pizza')
+    r1.add_ingredient('Cheese', 20)
+    r1.add_ingredient('Flour', 20)
+    r2 = Recipe.new('Pickles')
+    r2.add_ingredient('Brine', 10)
+    r2.add_ingredient('Cucumbers', 30)
+    r3 = Recipe.new('Peanuts')
+    r3.add_ingredient('Raw nuts', 10)
+    r3.add_ingredient('Salt', 10)
+    pantry.add_to_cookbook(r1)
+    pantry.add_to_cookbook(r2)
+    pantry.add_to_cookbook(r3)
+    pantry.restock('Cheese', 10)
+    pantry.restock('Flour', 20)
+    pantry.restock('Brine', 40)
+    pantry.restock('Cucumbers', 120)
+    pantry.restock('Raw nuts', 20)
+    pantry.restock('Salt', 20)
+    assert_equal 0, pantry.check_recipe_against_stock_for_quantity(r1)
+    assert_equal 4, pantry.check_recipe_against_stock_for_quantity(r2)
+    assert_equal 2, pantry.check_recipe_against_stock_for_quantity(r3)
+  end
 
   def test_can_see_how_many_you_can_make_with_stock
     pantry = Pantry.new
@@ -197,8 +220,8 @@ class PantryTest < Minitest::Test
     pantry.restock('Raw nuts', 20)
     pantry.restock('Salt', 20)
     expected = {
-                "Pickles" => 4,
-                "Peanuts" => 2
+                'Pickles' => 4,
+                'Peanuts' => 2
                 }
     assert_equal expected, pantry.how_many_can_i_make
   end
