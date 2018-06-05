@@ -48,11 +48,36 @@ class Pantry
     valid_ingredients.length == rei.keys.length
   end
 
-  def what_can_i_make
+  def make_list_of_valid_recipes
     @cookbook.inject(Array.new) do |collector, recipe|
-      if check_recipe_against_stock(recipe) == true
-        collector << recipe.name
+      if check_recipe_against_stock(recipe)
+        collector << recipe
       end
+      collector
+    end
+  end
+
+  def what_can_i_make
+    make_list_of_valid_recipes.map do |recipe|
+      recipe.name
+    end
+  end
+
+  def check_recipe_against_stock_for_quantity(recipe)
+    rei = recipe.ingredients
+    si = @stock
+    quantities = rei.keys.inject(Array.new) do |collector, ingredient|
+      collector << si[ingredient] / rei[ingredient]
+      collector
+    end
+    quantities.min
+  end
+
+  def how_many_can_i_make
+    can_cook = make_list_of_valid_recipes
+    can_cook.inject(Hash.new(0)) do |collector, recipe|
+      quantity = check_recipe_against_stock_for_quantity(recipe)
+      collector[recipe.name] = quantity
       collector
     end
   end
