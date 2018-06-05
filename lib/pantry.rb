@@ -30,7 +30,6 @@ class Pantry
     print_out = ingredients.inject('') do |print_out, ingredient|
       print_out += "* #{ingredient}: #{@shopping_list[ingredient]}\n"
       print_out
-    end
-    require 'pry'; binding.pry
+    end.chomp
   end
 end

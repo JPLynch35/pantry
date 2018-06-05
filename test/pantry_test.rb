@@ -78,15 +78,15 @@ class PantryTest < Minitest::Test
   def test_can_print_the_shopping_list
     pantry = Pantry.new
     r1 = Recipe.new("Cheese Pizza")
-    r1.add_ingredient("Flour", 20)
     r1.add_ingredient("Cheese", 20)
+    r1.add_ingredient("Flour", 20)
     pantry.add_to_shopping_list(r1)
     r2 = Recipe.new("Spaghetti")
     r2.add_ingredient("Spaghetti Noodles", 10)
     r2.add_ingredient("Marinara Sauce", 10)
     r2.add_ingredient("Cheese", 5)
     pantry.add_to_shopping_list(r2)
-    expected = '* Cheese: 25\n* Flour: 20\n* Spaghetti Noodles: 10\n* Marinara Sauce: 10'
+    expected = "* Cheese: 25\n* Flour: 20\n* Spaghetti Noodles: 10\n* Marinara Sauce: 10"
     assert_equal expected, pantry.print_shopping_list
   end
 end
